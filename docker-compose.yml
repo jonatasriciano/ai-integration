@@ -1,6 +1,30 @@
-version: '3'
+version: '3.8'
+
 services:
-  web:
-    build: .
+  app:
+    container_name: "ai-integration"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URI=mongodb://mongo:27017/requests_db  # MongoDB connection URI
+    command: npx nodemon server.js
+    depends_on:
+      - mongo  # Ensures MongoDB starts before app
+
+  mongo:
+    image: mongo:latest
+    container_name: "mongodb"  # MongoDB container name
+    ports:
+      - "27017:27017"  # Local port for MongoDB access
+    volumes:
+      - mongo_data:/data/db  # Persistent volume for MongoDB data
+
+volumes:
+  mongo_data:

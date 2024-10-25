@@ -1,7 +1,7 @@
 import express from 'express';
 import routes from './routes.js';
 import { authenticate } from './middleware/authenticate.js';
-import logRequest from './middleware/logger.js';
+import { logRequest } from './middleware/logger.js';
 
 
 const app = express();

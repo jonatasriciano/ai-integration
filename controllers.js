@@ -1,7 +1,8 @@
 import { generatePromptFromGpt } from './service/gptService.js';
 import { generatePromptFromGemini } from './service/geminiService.js';
+import { logAIResponse } from './middleware/logger.js';
 
-// Funtion to generate prompt using GPT
+// Function to generate prompt using GPT
 async function generatePromptGpt(req, res) {
     let { prompt, tokens } = req.body; // Get prompt from request body
 
@@ -13,6 +14,8 @@ async function generatePromptGpt(req, res) {
     try {
         // Call generatePromptFromGpt with prompt
         const ret = await generatePromptFromGpt(prompt, tokens);
+        // Log AI response
+        await logAIResponse(ret);
         // Return generated prompt
         res.json(ret);
     } catch (error) {
@@ -22,7 +25,7 @@ async function generatePromptGpt(req, res) {
     }
 }
 
-// Funtion to generate prompt using GEMINI
+// Function to generate prompt using GEMINI
 async function generatePromptGemini(req, res) {
     let { prompt, tokens } = req.body; // Get prompt from request body
 
@@ -34,6 +37,8 @@ async function generatePromptGemini(req, res) {
     try {
         // Call generatePromptFromGemini with prompt
         const ret = await generatePromptFromGemini(prompt, tokens);
+        // Log AI response
+        await logAIResponse(ret);
         // Return generated prompt
         res.json(ret);
     } catch (error) {

@@ -6,6 +6,7 @@ import path from 'path'; // Import the path module here
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 async function logRequest(req, res, next) { // Include res and next
     const db = await connectDB();
     const logCollection = db.collection('request_logs');
@@ -25,4 +26,18 @@ async function logRequest(req, res, next) { // Include res and next
     next(); // This will call the next middleware or route handler
 }
 
-export default logRequest;
+// Função para gravar a resposta da IA no MongoDB
+async function logAIResponse(responseData) {
+    const db = await connectDB();
+    const aiResponsesCollection = db.collection('ai_responses'); // Change collection name if needed
+
+    const aiLogEntry = {
+        response: responseData,
+        timestamp: new Date()
+    };
+
+    await aiResponsesCollection.insertOne(aiLogEntry);
+    console.log('AI response logged:', aiLogEntry);
+}
+
+export { logRequest, logAIResponse };

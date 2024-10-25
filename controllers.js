@@ -2,50 +2,42 @@ import { generatePromptFromGpt } from './service/gptService.js';
 import { generatePromptFromGemini } from './service/geminiService.js';
 import { logAIResponse } from './middleware/logger.js';
 
-// Function to generate prompt using GPT
-async function generatePromptGpt(req, res) {
-    let { prompt, tokens } = req.body; // Get prompt from request body
+// Function to validate and generate the prompt
+async function generatePrompt(req, res, generateFunction) {
+    let { prompt, tokens } = req.body; // Get the prompt from the request body
 
-    // Validate prompt
+    // Validate the prompt
     if (!prompt) {
         return res.status(400).json({ error: 'PROMPT is required' });
     }
 
+    // Validate tokens
+    if (!tokens || isNaN(tokens) || tokens <= 0) {
+        tokens = 100; // Default value if tokens are not provided or invalid
+    }
+
     try {
-        // Call generatePromptFromGpt with prompt
-        const ret = await generatePromptFromGpt(prompt, tokens);
-        // Log AI response
+        // Call the generation function with the prompt
+        const ret = await generateFunction(prompt, tokens);
+        // Log the AI response
         await logAIResponse(ret);
-        // Return generated prompt
+        // Return the generated prompt
         res.json(ret);
     } catch (error) {
-        // Log error and return 500 error
+        // Log the error and return a 500 error
         console.error('Error generating prompt:', error);
-        res.status(500).json({ error: 'An error occurred while generating PROMPT' });
+        res.status(500).json({ error: 'An error occurred while generating the prompt' });
     }
+}
+
+// Function to generate prompt using GPT
+async function generatePromptGpt(req, res) {
+    await generatePrompt(req, res, generatePromptFromGpt);
 }
 
 // Function to generate prompt using GEMINI
 async function generatePromptGemini(req, res) {
-    let { prompt, tokens } = req.body; // Get prompt from request body
-
-    // Validate prompt
-    if (!prompt) {
-        return res.status(400).json({ error: 'PROMPT is required' });
-    }
-
-    try {
-        // Call generatePromptFromGemini with prompt
-        const ret = await generatePromptFromGemini(prompt, tokens);
-        // Log AI response
-        await logAIResponse(ret);
-        // Return generated prompt
-        res.json(ret);
-    } catch (error) {
-        // Log error and return 500 error
-        console.error('Error generating prompt:', error);
-        res.status(500).json({ error: 'An error occurred while generating PROMPT' });
-    }
+    await generatePrompt(req, res, generatePromptFromGemini);
 }
 
 export {

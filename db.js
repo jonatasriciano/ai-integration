@@ -13,4 +13,12 @@ async function connectDB() {
     return db;
 }
 
+process.on('SIGINT', async () => {
+    if (client) {
+        await client.close();
+        console.log('MongoDB client disconnected');
+        process.exit(0);
+    }
+});
+
 export default connectDB;

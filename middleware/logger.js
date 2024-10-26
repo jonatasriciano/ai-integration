@@ -1,5 +1,5 @@
 // middleware/logger.js
-import connectDB from '../db.js';
+import connectDB from '../config/db.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path'; // Import the path module here

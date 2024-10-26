@@ -1,5 +1,6 @@
 import express from 'express';
-import routes from './routes.js';
+import geminiRoutes from './routes/geminiRoutes.js';
+import gptRoutes from './routes/gptRoutes.js';
 import { authenticate } from './middleware/authenticate.js';
 import { logRequest } from './middleware/logger.js';
 
@@ -10,7 +11,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(logRequest); // Add the logRequest middleware
 app.use(authenticate); // Add the authenticate middleware
-app.use(routes);
+app.use(geminiRoutes);
+app.use(gptRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -21,3 +23,4 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+

@@ -54,7 +54,7 @@ This project integrates GPT and Gemini AI models to generate prompts. It also lo
 └── README.md               # Project documentation
 ```
 
-============
+
 
 Clone the repository:
 ---------------------

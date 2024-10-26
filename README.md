@@ -52,9 +52,9 @@ This project integrates GPT and Gemini AI models to generate prompts. It also lo
 ├── docker-compose.yml      # Docker Compose for MongoDB and app
 ├── server.js               # App entry point
 └── README.md               # Project documentation
+```
 
 
-============
 
 Clone the repository:
 ---------------------

@@ -14,7 +14,8 @@ app.use(logRequest); // Add the logRequest middleware
 app.use(authenticate); // Add the authenticate middleware
 app.use(geminiRoutes);
 app.use(gptRoutes);
-//app.use(contentRoutes);
+app.use(contentRoutes);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

@@ -10,13 +10,10 @@ export function validatePromptAndTokens(req, res) {
     if (!tokens || isNaN(tokens) || tokens <= 0) {
         tokens = Number(process.env.MAX_TOKENS); // Default value if tokens are not provided or invalid
     }
-
     return { prompt, tokens }; // Return validated values
 }
-
 export function validateUrlAndModel(req, res) {
-    let { url, model } = req.body;
-
+    let { url, model, tokens } = req.body;
     // Validate the url
     if (!url) {
         return { error: res.status(400).json({ error: 'URL is required' }) };
@@ -26,6 +23,10 @@ export function validateUrlAndModel(req, res) {
     if (!model) {
         return { error: res.status(400).json({ error: 'MODEL is required' }) };
     }
-    return { url, model };
 
+    // Validate tokens
+    if (!tokens || isNaN(tokens) || tokens <= 0) {
+        tokens = Number(process.env.MAX_TOKENS); // Default value if tokens are not provided or invalid
+    }
+    return { url, model, tokens };
 }

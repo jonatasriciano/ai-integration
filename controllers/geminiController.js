@@ -11,7 +11,7 @@ async function generatePrompt(req, res, generateFunction) {
 
     // If there's an error, return early
     if (error) {
-        return error;
+        return error; // Response already sent by the utility function
     }
 
     try {

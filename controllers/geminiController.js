@@ -1,18 +1,17 @@
 import { generatePromptFromGemini } from '../services/geminiService.js';
 import { logAIResponse } from '../middleware/logger.js';
+import { validatePromptAndTokens } from '../utils/validation.js';
 
 // Function to validate and generate the prompt
 async function generatePrompt(req, res, generateFunction) {
-    let { prompt, tokens } = req.body; // Get the prompt from the request body
 
-    // Validate the prompt
-    if (!prompt) {
-        return res.status(400).json({ error: 'PROMPT is required' });
-    }
+    // Use the validation utility
+    const validationResult = validatePromptAndTokens(req, res);
+    const { prompt, tokens, error } = validationResult || {};
 
-    // Validate tokens
-    if (!tokens || isNaN(tokens) || tokens <= 0) {
-        tokens = 100; // Default value if tokens are not provided or invalid
+    // If there's an error, return early
+    if (error) {
+        return error; // Response already sent by the utility function
     }
 
     try {

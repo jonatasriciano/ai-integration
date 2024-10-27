@@ -1,6 +1,7 @@
 import express from 'express';
 import geminiRoutes from './routes/geminiRoutes.js';
 import gptRoutes from './routes/gptRoutes.js';
+import contentRoutes from './routes/contentRoutes.js';
 import { authenticate } from './middleware/authenticate.js';
 import { logRequest } from './middleware/logger.js';
 
@@ -13,6 +14,7 @@ app.use(logRequest); // Add the logRequest middleware
 app.use(authenticate); // Add the authenticate middleware
 app.use(geminiRoutes);
 app.use(gptRoutes);
+app.use(contentRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

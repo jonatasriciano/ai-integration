@@ -5,4 +5,4 @@ const router = express.Router();
 
 router.post('/api/prompt-gemini', generatePromptGemini);
 
-export default router;
+export default router;  

@@ -10,21 +10,29 @@ services:
       - .:/app
       - /app/node_modules
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Exposing port 3000 to host
     environment:
       - NODE_ENV=development
-      - MONGODB_URI=mongodb://mongo:27017/requests_db  # MongoDB connection URI
+      - MONGODB_URI=mongodb://mongo:27017/requests_db
     command: npx nodemon server.js
     depends_on:
-      - mongo  # Ensures MongoDB starts before app
+      - mongo
+    networks:
+      - shared_network
 
   mongo:
     image: mongo:latest
-    container_name: "mongodb"  # MongoDB container name
+    container_name: "mongodb"
     ports:
-      - "27017:27017"  # Local port for MongoDB access
+      - "27017:27017"
     volumes:
-      - mongo_data:/data/db  # Persistent volume for MongoDB data
+      - mongo_data:/data/db
+    networks:
+      - shared_network
 
 volumes:
   mongo_data:
+
+networks:
+  shared_network:
+    external: true 

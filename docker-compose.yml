@@ -13,12 +13,12 @@ services:
       - "3000:3000"  # Exposing port 3000 to host
     environment:
       - NODE_ENV=development
-      - MONGODB_URI=mongodb://mongo:27017/requests_db
+      - MONGODB_URI=mongodb://mongodb:27017/requests_db
     command: npx nodemon server.js
     depends_on:
       - mongo
     networks:
-      - shared_network
+      - shared_network  # Using shared network for communication
 
   mongo:
     image: mongo:latest
@@ -28,11 +28,11 @@ services:
     volumes:
       - mongo_data:/data/db
     networks:
-      - shared_network
+      - shared_network  # Ensuring Mongo is also in shared network
 
 volumes:
   mongo_data:
 
 networks:
   shared_network:
-    external: true 
+    external: true  # Using external shared network
